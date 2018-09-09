@@ -1,9 +1,11 @@
 #sidebar {
+    width: 400px;
     background: #9a67ea;
     box-shadow: 5px 6px 15px grey;
 }
 
 .fileBrowser {
+    height: 100%;
     display: flex;
     flex-direction: column;
     color: white;
@@ -13,14 +15,16 @@
     padding:20px 30px 20px 30px;
     background: #320b86;
     font-size: 16pt;
+    word-wrap: break-word;
 }
 
 .fileBrowserContent {
     flex-grow: 1;
+    overflow: auto;
 }
 
 .fileCell {
-    padding: 2px 20px 2px 8px;
+    padding: 4px 12px 4px 12px;
     font-size: 14pt;
 }
 
