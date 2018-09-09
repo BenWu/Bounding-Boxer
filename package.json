@@ -3,16 +3,24 @@
   "version": "0.1.0",
   "description": "Draw bounding boxes on images and save as CSV",
   "private": true,
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "dev": "nf start"
+  },
+  "main": "src/electron-main.js",
   "dependencies": {
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-scripts": "1.1.5"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+  "devDependencies": {
+    "electron": "^2.0.8",
+    "electron-devtools-installer": "^2.2.4",
+    "foreman": "^3.0.1"
   },
   "repository": {
     "type": "git",
@@ -23,5 +31,5 @@
   "bugs": {
     "url": "https://github.com/Ben-Wu/Bounding-Boxer/issues"
   },
-  "homepage": "https://github.com/Ben-Wu/Bounding-Boxer"
+  "homepage": "./"
 }
