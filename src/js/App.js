@@ -8,11 +8,19 @@ class App extends Component {
     return (
       <div className="App">
 
-        <div className="container header">
-          <p className="title">Bounding Boxer</p>
-        </div>
+        <div className="container-fluid appHeader">
+            <div className="appTitle">Bounding Boxer</div>
+          </div>
 
-        <FileBrowser rootDir={'./input_images/'}/>
+        <div className="content">
+
+          <FileBrowser rootDir={'./input_images/'}/>
+
+          <div className="toolView">
+            Placeholder
+          </div>
+
+        </div>
 
       </div>
     );

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import '../css/FileBrowser.css';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
@@ -58,17 +59,29 @@ class FileBrowser extends Component {
     })
   }
 
+  renderDirCell(name) {
+    // TODO: onClick open folder and list new images
+    return <div className="fileCell" key={name}>{name}</div>
+  }
+
   renderFileCell(name) {
-    return <p key={name}>{name}</p>
+    // TODO: onClick select image to use in tool
+    return <div className="fileCell" key={name}>{name}</div>
   }
 
   render() {
     return (
-      <div className='fileBrowser'>
-        <h1>{this.state.currentDir}</h1>
-        {this.state.dirs.map(this.renderFileCell)}
-        {this.state.images.map(this.renderFileCell)}
-      </div>
+      <nav id="sidebar">
+        <div className="fileBrowser">
+          <div className="fileBrowserHeader">
+            {this.state.currentDir}
+          </div>
+          <div className="fileBrowserContent">
+            {this.state.dirs.map(this.renderDirCell)}
+            {this.state.images.map(this.renderFileCell)}
+          </div>
+        </div>
+      </nav>
     );
   }
 }

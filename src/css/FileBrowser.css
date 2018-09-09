@@ -1,0 +1,33 @@
+#sidebar {
+    background: #9a67ea;
+    box-shadow: 5px 6px 15px grey;
+}
+
+.fileBrowser {
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.fileBrowserHeader {
+    padding:20px 30px 20px 30px;
+    background: #320b86;
+    font-size: 16pt;
+}
+
+.fileBrowserContent {
+    flex-grow: 1;
+}
+
+.fileCell {
+    padding: 2px 20px 2px 8px;
+    font-size: 14pt;
+}
+
+.fileCell:hover {
+    background: #673ab7;
+}
+
+.selectedFileCell {
+    background: #673ab7;
+}
