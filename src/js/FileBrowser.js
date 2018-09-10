@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import backIcon from '../img/back.png'
+import fileIcon from '../img/file.png'
+import folderIcon from '../img/folder.png'
 import '../css/FileBrowser.css';
 
 const electron = window.require('electron');
@@ -68,7 +71,10 @@ class FileBrowser extends Component {
     return (
       <div className="fileCell"
            onClick={() => this.onDirSelected(name)}
-           key={name}>{name}</div>
+           key={name}>
+        <img src={folderIcon} alt=""/>
+        {name}
+      </div>
     )
   }
 
@@ -82,7 +88,10 @@ class FileBrowser extends Component {
     return (
       <div className={`fileCell ${selected ? 'selectedFileCell' : ''}`}
            onClick={() => this.onImageSelected(name)}
-           key={name}>{name}</div>
+           key={name}>
+        <img src={fileIcon} alt=""/>
+        <div>{name}</div>
+      </div>
     )
   }
 
@@ -98,8 +107,9 @@ class FileBrowser extends Component {
 
   renderBackCell() {
     return (
-      <div className="fileCell selectedFileCell" onClick={this.goBack}>
-        Back to previous folder
+      <div className="fileCell backCell" onClick={this.goBack}>
+        <img src={backIcon} alt=""/>
+        <div>Back to previous folder</div>
       </div>
     )
   }
@@ -123,7 +133,7 @@ class FileBrowser extends Component {
       <nav id="sidebar">
         <div className="fileBrowser">
           <div className="fileBrowserHeader">
-            {this.state.currentDir}
+            {this.state.currentDir.slice(1)}
           </div>
           <div className="fileBrowserContent">
             {this.props.rootDir !== this.state.currentDir ? this.renderBackCell() : ''}

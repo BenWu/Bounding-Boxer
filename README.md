@@ -7,11 +7,11 @@ Draw bounding boxes on images and save as CSV
 
 ```sh
 git clone https://github.com/Ben-Wu/Artist-Pathfinder.git
-yarn install
+yarn
 ```
 
 ### Build and Run
 
 ```sh
-yarn dev
+yarn start
 ```
