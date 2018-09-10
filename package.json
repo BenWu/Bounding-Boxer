@@ -11,7 +11,7 @@
     "eject": "react-scripts eject",
     "electron": "electron ."
   },
-  "main": "src/electron-main.js",
+  "main": "src/config/electron-main.js",
   "dependencies": {
     "react": "^16.5.0",
     "react-dom": "^16.5.0",

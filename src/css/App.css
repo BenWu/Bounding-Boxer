@@ -1,0 +1,28 @@
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.appHeader {
+  padding: 12px;
+  background: #000063;
+  box-shadow: 0 4px 32px grey;
+}
+
+.appTitle {
+  font-size: 24px;
+  text-align: center;
+  color: white;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  flex-grow: 1;
+}
+
+.toolView {
+  padding: 48px;
+}

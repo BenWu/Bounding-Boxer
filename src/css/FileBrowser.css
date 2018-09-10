@@ -1,0 +1,49 @@
+#sidebar {
+    width: 20%;
+    max-width: 400px;
+    min-width: 200px;
+    background: #9a67ea;
+    box-shadow: 5px 6px 15px grey;
+}
+
+.fileBrowser {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+.fileBrowserHeader {
+    padding:12px;
+    background: #320b86;
+    font-size: 14pt;
+    word-wrap: break-word;
+}
+
+.fileBrowserContent {
+    flex-grow: 1;
+    overflow: auto;
+}
+
+.fileCell {
+    display: flex;
+    flex-flow: row;
+    padding: 5px 12px 5px 12px;
+    font-size: 12pt;
+}
+
+.fileCell:hover {
+    background: #4527a0;
+}
+
+.fileCell img {
+    padding-right: 8px;
+}
+
+.selectedFileCell {
+    background: #673ab7;
+}
+
+.backCell {
+    background: #512da8;
+}

@@ -1,2 +1,2 @@
 react: npm run react-start
-electron: node src/electron-wait-react
+electron: node src/config/electron-wait-react
