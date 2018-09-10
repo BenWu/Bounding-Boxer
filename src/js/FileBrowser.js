@@ -11,10 +11,12 @@ class FileBrowser extends Component {
     this.state = {
       currentDir: props.rootDir,
       images: [],
-      dirs: []
+      dirs: [],
+      selectedFile: null,
+      prevState: null
     };
 
-    //this.onImageSelected = this.onImageSelected.bind(this);
+    this.goBack = this.goBack.bind(this);
     this.renderDirCell = this.renderDirCell.bind(this);
     this.renderFileCell = this.renderFileCell.bind(this);
   }
@@ -53,28 +55,67 @@ class FileBrowser extends Component {
     });
   }
 
-  onImageSelected(name) {
-    this.props.onImageSelected(this.state.currentDir + name);
+  onDirSelected(name) {
+    this.setState((state, props) => ({
+      currentDir: state.currentDir + name + '/',
+      images: [],
+      dirs: [],
+      prevState: state
+    }), () => this.updateFileList(this.state.currentDir));
   }
 
   renderDirCell(name) {
-    // TODO: onClick open folder and list new images
-    return <div className="fileCell" key={name}>{name}</div>
+    return (
+      <div className="fileCell"
+           onClick={() => this.onDirSelected(name)}
+           key={name}>{name}</div>
+    )
+  }
+
+  onImageSelected(name) {
+    this.setState({selectedFile: name});
+    this.props.onImageSelected(this.state.currentDir + name);
   }
 
   renderFileCell(name) {
-    return <div className="fileCell"
-                onClick={() => this.onImageSelected(name)} key={name}>{name}</div>
+    const selected = name === this.state.selectedFile;
+    return (
+      <div className={`fileCell ${selected ? 'selectedFileCell' : ''}`}
+           onClick={() => this.onImageSelected(name)}
+           key={name}>{name}</div>
+    )
   }
 
-  componentDidMount() {
-    this.listInputImages('', (inputDir, images, dirs) => {
+  goBack() {
+    if (this.state.prevState !== null) {
+      const selected = this.state.selectedFile;
+      this.setState(
+        this.state.prevState,
+        () => this.setState({selectedFile: selected})
+      );
+    }
+  }
+
+  renderBackCell() {
+    return (
+      <div className="fileCell selectedFileCell" onClick={this.goBack}>
+        Back to previous folder
+      </div>
+    )
+  }
+
+  updateFileList(path) {
+    this.listInputImages(path, (inputDir, images, dirs) => {
       this.setState({
         currentDir: inputDir,
         images,
         dirs
       });
-    })
+    });
+  }
+
+  componentDidMount() {
+    this.updateFileList(this.props.rootDir);
   }
 
   render() {
@@ -85,6 +126,7 @@ class FileBrowser extends Component {
             {this.state.currentDir}
           </div>
           <div className="fileBrowserContent">
+            {this.props.rootDir !== this.state.currentDir ? this.renderBackCell() : ''}
             {this.state.dirs.map(this.renderDirCell)}
             {this.state.images.map(this.renderFileCell)}
           </div>
