@@ -4,6 +4,11 @@ import './FileBrowser'
 import FileBrowser from "./FileBrowser";
 
 class App extends Component {
+  onImageSelected(filepath) {
+    // TODO
+    console.log(`Selected: ${filepath}`);
+  }
+
   render() {
     return (
       <div className="App">
@@ -14,7 +19,8 @@ class App extends Component {
 
         <div className="content">
 
-          <FileBrowser rootDir={'./input_images/'}/>
+          <FileBrowser rootDir={'./input_images/'}
+                       onImageSelected={this.onImageSelected}/>
 
           <div className="toolView">
             Placeholder

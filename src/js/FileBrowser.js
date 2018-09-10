@@ -13,13 +13,17 @@ class FileBrowser extends Component {
       images: [],
       dirs: []
     };
+
+    //this.onImageSelected = this.onImageSelected.bind(this);
+    this.renderDirCell = this.renderDirCell.bind(this);
+    this.renderFileCell = this.renderFileCell.bind(this);
   }
 
   /**
    * @callback callback
-   * @param {str} inputDir
-   * @param {[str]} images
-   * @param {[str]} dirs
+   * @param {string} inputDir
+   * @param {[string]} images
+   * @param {[string]} dirs
    */
 
   /**
@@ -49,14 +53,8 @@ class FileBrowser extends Component {
     });
   }
 
-  componentDidMount() {
-    this.listInputImages('', (inputDir, images, dirs) => {
-      this.setState({
-        currentDir: inputDir,
-        images,
-        dirs
-      });
-    })
+  onImageSelected(name) {
+    this.props.onImageSelected(this.state.currentDir + name);
   }
 
   renderDirCell(name) {
@@ -65,8 +63,18 @@ class FileBrowser extends Component {
   }
 
   renderFileCell(name) {
-    // TODO: onClick select image to use in tool
-    return <div className="fileCell" key={name}>{name}</div>
+    return <div className="fileCell"
+                onClick={() => this.onImageSelected(name)} key={name}>{name}</div>
+  }
+
+  componentDidMount() {
+    this.listInputImages('', (inputDir, images, dirs) => {
+      this.setState({
+        currentDir: inputDir,
+        images,
+        dirs
+      });
+    })
   }
 
   render() {

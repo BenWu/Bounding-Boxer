@@ -1,5 +1,7 @@
 #sidebar {
-    width: 400px;
+    width: 20%;
+    max-width: 400px;
+    min-width: 200px;
     background: #9a67ea;
     box-shadow: 5px 6px 15px grey;
 }
@@ -12,9 +14,9 @@
 }
 
 .fileBrowserHeader {
-    padding:20px 30px 20px 30px;
+    padding:12px;
     background: #320b86;
-    font-size: 16pt;
+    font-size: 14pt;
     word-wrap: break-word;
 }
 
@@ -25,7 +27,7 @@
 
 .fileCell {
     padding: 4px 12px 4px 12px;
-    font-size: 14pt;
+    font-size: 12pt;
 }
 
 .fileCell:hover {
