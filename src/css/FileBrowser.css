@@ -47,3 +47,7 @@
 .backCell {
     background: #512da8;
 }
+
+.cellIcon {
+    height: 24px;
+}

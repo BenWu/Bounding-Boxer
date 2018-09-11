@@ -72,7 +72,7 @@ class FileBrowser extends Component {
       <div className="fileCell"
            onClick={() => this.onDirSelected(name)}
            key={name}>
-        <img src={folderIcon} alt=""/>
+        <img className="cellIcon" src={folderIcon} alt=""/>
         {name}
       </div>
     )
@@ -89,7 +89,7 @@ class FileBrowser extends Component {
       <div className={`fileCell ${selected ? 'selectedFileCell' : ''}`}
            onClick={() => this.onImageSelected(name)}
            key={name}>
-        <img src={fileIcon} alt=""/>
+        <img className="cellIcon" src={fileIcon} alt=""/>
         <div>{name}</div>
       </div>
     )
@@ -108,7 +108,7 @@ class FileBrowser extends Component {
   renderBackCell() {
     return (
       <div className="fileCell backCell" onClick={this.goBack}>
-        <img src={backIcon} alt=""/>
+        <img className="cellIcon" src={backIcon} alt=""/>
         <div>Back to previous folder</div>
       </div>
     )
