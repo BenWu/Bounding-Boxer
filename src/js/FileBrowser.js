@@ -108,8 +108,9 @@ class FileBrowser extends Component {
 
   goBack() {
     if (this.state.prevState !== null) {
-      this.state.prevState.selectedFile = this.state.selectedFile;
-      this.setState(this.state.prevState);
+      const prevState = this.state.prevState;
+      prevState.selectedFile = this.state.selectedFile;
+      this.setState(prevState);
     }
   }
 
