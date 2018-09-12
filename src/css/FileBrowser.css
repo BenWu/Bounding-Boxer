@@ -1,7 +1,7 @@
 #sidebar {
     width: 20%;
-    max-width: 400px;
-    min-width: 200px;
+    max-width: 500px;
+    min-width: 300px;
     background: #9a67ea;
     box-shadow: 5px 6px 15px grey;
 }
@@ -13,16 +13,29 @@
     color: white;
 }
 
+.fileBrowserDropPrompt {
+    flex-grow: 1;
+    padding: 12px;
+    background: #4527a0;
+    text-align: center;
+    font-size: 22pt;
+}
+
 .fileBrowserHeader {
-    padding:12px;
+    padding: 12px;
     background: #320b86;
-    font-size: 14pt;
+    font-size: 12pt;
     word-wrap: break-word;
 }
 
 .fileBrowserContent {
     flex-grow: 1;
     overflow: auto;
+}
+
+.fileBrowserDragPrompt {
+    padding: 12px;
+    background: #320b86;
 }
 
 .fileCell {

@@ -6,6 +6,15 @@ import '../css/FileBrowser.css';
 
 const electron = window.require('electron');
 const fs = electron.remote.require('fs');
+const os = electron.remote.require('os');
+
+document.ondragover = document.ondrop = (ev) => {
+  ev.preventDefault();
+};
+
+document.body.ondrop = (ev) => {
+  ev.preventDefault();
+};
 
 class FileBrowser extends Component {
 
@@ -16,12 +25,16 @@ class FileBrowser extends Component {
       images: [],
       dirs: [],
       selectedFile: null,
-      prevState: null
+      prevState: null,
+      dragOver: false
     };
 
     this.goBack = this.goBack.bind(this);
     this.renderDirCell = this.renderDirCell.bind(this);
     this.renderFileCell = this.renderFileCell.bind(this);
+    this.onDragLeave = this.onDragLeave.bind(this);
+    this.onDragOver = this.onDragOver.bind(this);
+    this.onDrop = this.onDrop.bind(this);
   }
 
   /**
@@ -61,8 +74,6 @@ class FileBrowser extends Component {
   onDirSelected(name) {
     this.setState((state, props) => ({
       currentDir: state.currentDir + name + '/',
-      images: [],
-      dirs: [],
       prevState: state
     }), () => this.updateFileList(this.state.currentDir));
   }
@@ -97,11 +108,8 @@ class FileBrowser extends Component {
 
   goBack() {
     if (this.state.prevState !== null) {
-      const selected = this.state.selectedFile;
-      this.setState(
-        this.state.prevState,
-        () => this.setState({selectedFile: selected})
-      );
+      this.state.prevState.selectedFile = this.state.selectedFile;
+      this.setState(this.state.prevState);
     }
   }
 
@@ -124,23 +132,74 @@ class FileBrowser extends Component {
     });
   }
 
+  onDragLeave(e) {
+    this.setState({dragOver: false});
+    e.preventDefault();
+  }
+
+  onDragOver(e) {
+    this.setState({dragOver: true});
+    e.preventDefault();
+  }
+
+  onDrop(e) {
+    try { // Exception if not file
+      const divider = os.platform() === 'win32' ? '\\' : '/';
+      let path = e.dataTransfer.files[0].path + divider;
+      console.log(path);
+      this.setState({dragOver: false}, () => {
+        fs.stat(path, (err, stats) => {
+          if (!err) {
+            const subdirs = path.split(divider);
+            subdirs.splice(subdirs.length - 2, 1);
+            if (stats.isFile()) {
+              path = subdirs.join(divider)
+            }
+            this.setState((state, props) => ({
+              currentDir: path,
+              prevState: state,
+            }), () => this.updateFileList(this.state.currentDir));
+          }
+        });
+      });
+    } catch (e) {}
+    e.preventDefault();
+  }
+
   componentDidMount() {
     this.updateFileList(this.props.rootDir);
   }
 
+  renderDropPrompt() {
+    return (
+      <div className="fileBrowser">
+        <div className="fileBrowserDropPrompt">Drop to add</div>
+      </div>
+    );
+  }
+
+  renderFileBrowser() {
+    return (
+      <div className="fileBrowser">
+        <div className="fileBrowserHeader">
+          {this.state.currentDir.slice(1)}
+        </div>
+        <div className="fileBrowserContent">
+          {this.state.prevState !== null ? this.renderBackCell() : ''}
+          {this.state.dirs.map(this.renderDirCell)}
+          {this.state.images.map(this.renderFileCell)}
+        </div>
+        <div className="fileBrowserDragPrompt">Drop folders here to use them</div>
+      </div>
+    );
+  }
+
   render() {
     return (
-      <nav id="sidebar">
-        <div className="fileBrowser">
-          <div className="fileBrowserHeader">
-            {this.state.currentDir.slice(1)}
-          </div>
-          <div className="fileBrowserContent">
-            {this.props.rootDir !== this.state.currentDir ? this.renderBackCell() : ''}
-            {this.state.dirs.map(this.renderDirCell)}
-            {this.state.images.map(this.renderFileCell)}
-          </div>
-        </div>
+      <nav id="sidebar" onDragOver={this.onDragOver}
+           onDragLeave={this.onDragLeave} onDrop={this.onDrop}>
+        {(this.state.dragOver) ? this.renderDropPrompt()
+          : this.renderFileBrowser()}
       </nav>
     );
   }
