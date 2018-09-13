@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start": "nf start",
+    "start-headless": "BROWSER=none nf start",
     "react-start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
