@@ -52,7 +52,7 @@ class FileBrowser extends Component {
    */
   listInputImages(inputDir, callback) {
     if (!inputDir) {
-      inputDir = './input_images/';
+      inputDir = 'input_images/';
     }
     fs.readdir(inputDir, (err, files) => {
       let images = [];
@@ -89,16 +89,16 @@ class FileBrowser extends Component {
     )
   }
 
-  onImageSelected(name) {
+  onFileSelected(name) {
     this.setState({selectedFile: name});
-    this.props.onImageSelected(this.state.currentDir + name);
+    this.props.onFileSelected(this.state.currentDir + name);
   }
 
   renderFileCell(name) {
     const selected = name === this.state.selectedFile;
     return (
       <div className={`fileCell ${selected ? 'selectedFileCell' : ''}`}
-           onClick={() => this.onImageSelected(name)}
+           onClick={() => this.onFileSelected(name)}
            key={name}>
         <img className="cellIcon" src={fileIcon} alt=""/>
         <div>{name}</div>
@@ -146,20 +146,24 @@ class FileBrowser extends Component {
   onDrop(e) {
     try { // Exception if not file
       const divider = os.platform() === 'win32' ? '\\' : '/';
-      let path = e.dataTransfer.files[0].path + divider;
+      let path = e.dataTransfer.files[0].path;
       console.log(path);
       this.setState({dragOver: false}, () => {
         fs.stat(path, (err, stats) => {
           if (!err) {
-            const subdirs = path.split(divider);
-            subdirs.splice(subdirs.length - 2, 1);
             if (stats.isFile()) {
+              const subdirs = path.split(divider);
+              console.log(subdirs);
+              subdirs.splice(subdirs.length - 1, 1);
               path = subdirs.join(divider)
             }
+            path += divider;
             this.setState((state, props) => ({
               currentDir: path,
               prevState: state,
             }), () => this.updateFileList(this.state.currentDir));
+          } else {
+            console.log(err);
           }
         });
       });
@@ -190,7 +194,7 @@ class FileBrowser extends Component {
           {this.state.dirs.map(this.renderDirCell)}
           {this.state.images.map(this.renderFileCell)}
         </div>
-        <div className="fileBrowserDragPrompt">Drop folders here to use them</div>
+        <div className="fileBrowserDragPrompt">Drop folders here to go to them</div>
       </div>
     );
   }

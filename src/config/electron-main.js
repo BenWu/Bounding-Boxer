@@ -15,7 +15,12 @@ let mainWindow;
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({width: 800, height: 600});
+    mainWindow = new BrowserWindow({
+      width: 1280, height: 720,
+      webPreferences: {
+        webSecurity: false // TODO: Should prolly remove eventually
+      }
+    });
 
     const startUrl = process.env.ELECTRON_START_URL || url.format({
             pathname: path.join(__dirname, '/../build/index.html'),
@@ -66,3 +71,5 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+global.appPath = app.getAppPath();

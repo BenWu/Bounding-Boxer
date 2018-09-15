@@ -3,8 +3,10 @@ import '../css/App.css';
 import './FileBrowser'
 import FileBrowser from "./FileBrowser";
 
+const appPath = window.require('electron').remote.getGlobal('appPath');
+
 class App extends Component {
-  onImageSelected(filepath) {
+  onFileSelected(filepath) {
     // TODO
     console.log(`Selected: ${filepath}`);
   }
@@ -19,8 +21,8 @@ class App extends Component {
 
         <div className="content">
 
-          <FileBrowser rootDir={'./input_images/'}
-                       onImageSelected={this.onImageSelected}/>
+          <FileBrowser rootDir={`${appPath}/input_images/`}
+                       onFileSelected={this.onFileSelected}/>
 
           <div className="toolView">
             Placeholder
