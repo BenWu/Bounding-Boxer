@@ -154,7 +154,7 @@ class FileBrowser extends Component {
   renderBrowserCell(name, onClick, icon, classNames='') {
     const Icon = icon;
     return (
-      <div className={`fileCell ${classNames}`}
+      <div className={`fileCell ${classNames} waves-effect waves-dark-purple`}
            key={name} onClick={() => onClick(name)}>
         <Icon className="cellIcon"/>
         {name}
@@ -166,8 +166,9 @@ class FileBrowser extends Component {
     return (
       <div className="fileBrowser">
         <div className="fileBrowserHeader">
-          {this.state.currentDir.slice(1)}
+          {this.state.currentDir}
         </div>
+
         <div className="fileBrowserContent">
           {this.state.prevState !== null
             ? this.renderBrowserCell('Back to previous folder', this.goBack, ArrowBack, 'backCell') : ''}
@@ -178,8 +179,9 @@ class FileBrowser extends Component {
           {this.state.files.map((name) => (
             this.renderBrowserCell(name, this.selectFile, InsertDriveFileOutlined,
               (name === this.state.selectedFile ? 'selectedFileCell' : '')
-          )))}
+            )))}
         </div>
+
         <div className="fileBrowserDragPrompt">Drop folders here to go to them</div>
       </div>
     );
@@ -187,11 +189,11 @@ class FileBrowser extends Component {
 
   render() {
     return (
-      <nav id="sidebar" onDragOver={this.onDragOver}
+      <div id="sidebar" onDragOver={this.onDragOver}
            onDragLeave={this.onDragLeave} onDrop={this.onDrop}>
         {(this.state.dragOver) ? this.renderDropPrompt()
           : this.renderFileBrowser()}
-      </nav>
+      </div>
     );
   }
 }
