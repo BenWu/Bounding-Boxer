@@ -14,12 +14,10 @@ class ImageLabeler extends Component {
     if (this.props.selectedFile && (
       this.props.selectedFile.endsWith('.jpg') ||
       this.props.selectedFile.endsWith('.png'))) {
-      const reader = new FileReader();
-      //reader.addEventListener('load',
-      //  () => {this.setState({loadedImage: reader.result})}, false);
-      //reader.readAsDataURL(this.props.selectedFile);
       return (
-        <img src={'file://' + this.props.selectedFile} alt="Preview Image"/>
+        <img className="previewImage"
+             src={'file://' + this.props.selectedFile}
+             alt="Preview Image"/>
       );
     } else {
       return '';
@@ -29,8 +27,15 @@ class ImageLabeler extends Component {
   render() {
     return (
       <div className="toolView">
-        {this.props.selectedFile || 'Placeholder'}
-        {this.renderPreviewImage()}
+
+        <div className="labelerHeader">
+          {this.props.selectedFile || 'Placeholder'}
+        </div>
+
+        <div className="imageFrame">
+          {this.renderPreviewImage()}
+        </div>
+
       </div>
     );
   }
