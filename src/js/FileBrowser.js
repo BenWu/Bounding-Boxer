@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import backIcon from '../img/back.png'
-import fileIcon from '../img/file.png'
-import folderIcon from '../img/folder.png'
+import ArrowBack from '@material-ui/icons/ArrowBack'
+import FolderOutline from '@material-ui/icons/FolderOutlined'
+import InsertDriveFileOutlined from '@material-ui/icons/InsertDriveFileOutlined'
+
 import '../css/FileBrowser.css';
 
 const electron = window.require('electron');
@@ -22,16 +23,18 @@ class FileBrowser extends Component {
     super(props);
     this.state = {
       currentDir: props.rootDir,
-      images: [],
+      files: [],
       dirs: [],
       selectedFile: null,
       prevState: null,
       dragOver: false
     };
 
+    this.goToRelativeFolder = this.goToRelativeFolder.bind(this);
+    this.goToFolder = this.goToFolder.bind(this);
+    this.selectFile = this.selectFile.bind(this);
     this.goBack = this.goBack.bind(this);
-    this.renderDirCell = this.renderDirCell.bind(this);
-    this.renderFileCell = this.renderFileCell.bind(this);
+
     this.onDragLeave = this.onDragLeave.bind(this);
     this.onDragOver = this.onDragOver.bind(this);
     this.onDrop = this.onDrop.bind(this);
@@ -50,10 +53,7 @@ class FileBrowser extends Component {
    * @param {string} inputDir
    * @param {callback} callback
    */
-  listInputImages(inputDir, callback) {
-    if (!inputDir) {
-      inputDir = 'input_images/';
-    }
+  listFiles(inputDir, callback) {
     fs.readdir(inputDir, (err, files) => {
       let images = [];
       let dirs = [];
@@ -71,39 +71,20 @@ class FileBrowser extends Component {
     });
   }
 
-  onDirSelected(name) {
-    this.setState((state, props) => ({
-      currentDir: state.currentDir + name + '/',
-      prevState: state
-    }), () => this.updateFileList(this.state.currentDir));
+  goToRelativeFolder(name) {
+    this.goToFolder(this.state.currentDir + name)
   }
 
-  renderDirCell(name) {
-    return (
-      <div className="fileCell"
-           onClick={() => this.onDirSelected(name)}
-           key={name}>
-        <img className="cellIcon" src={folderIcon} alt=""/>
-        {name}
-      </div>
-    )
+  goToFolder(path) {
+    this.setState({
+      currentDir: path + '/',
+      prevState: this.state
+    }, () => this.updateFileList(this.state.currentDir));
   }
 
-  onFileSelected(name) {
+  selectFile(name) {
     this.setState({selectedFile: name});
     this.props.onFileSelected(this.state.currentDir + name);
-  }
-
-  renderFileCell(name) {
-    const selected = name === this.state.selectedFile;
-    return (
-      <div className={`fileCell ${selected ? 'selectedFileCell' : ''}`}
-           onClick={() => this.onFileSelected(name)}
-           key={name}>
-        <img className="cellIcon" src={fileIcon} alt=""/>
-        <div>{name}</div>
-      </div>
-    )
   }
 
   goBack() {
@@ -114,20 +95,11 @@ class FileBrowser extends Component {
     }
   }
 
-  renderBackCell() {
-    return (
-      <div className="fileCell backCell" onClick={this.goBack}>
-        <img className="cellIcon" src={backIcon} alt=""/>
-        <div>Back to previous folder</div>
-      </div>
-    )
-  }
-
   updateFileList(path) {
-    this.listInputImages(path, (inputDir, images, dirs) => {
+    this.listFiles(path, (inputDir, files, dirs) => {
       this.setState({
         currentDir: inputDir,
-        images,
+        files,
         dirs
       });
     });
@@ -153,15 +125,11 @@ class FileBrowser extends Component {
           if (!err) {
             if (stats.isFile()) {
               const subdirs = path.split(divider);
-              console.log(subdirs);
               subdirs.splice(subdirs.length - 1, 1);
               path = subdirs.join(divider)
             }
-            path += divider;
-            this.setState((state, props) => ({
-              currentDir: path,
-              prevState: state,
-            }), () => this.updateFileList(this.state.currentDir));
+            console.log(path);
+            this.goToFolder(path);
           } else {
             console.log(err);
           }
@@ -183,17 +151,37 @@ class FileBrowser extends Component {
     );
   }
 
+  renderBrowserCell(name, onClick, icon, classNames='') {
+    const Icon = icon;
+    return (
+      <div className={`fileCell ${classNames} waves-effect waves-dark-purple`}
+           key={name} onClick={() => onClick(name)}>
+        <Icon className="cellIcon"/>
+        {name}
+      </div>
+    )
+  }
+
   renderFileBrowser() {
     return (
       <div className="fileBrowser">
         <div className="fileBrowserHeader">
-          {this.state.currentDir.slice(1)}
+          {this.state.currentDir}
         </div>
+
         <div className="fileBrowserContent">
-          {this.state.prevState !== null ? this.renderBackCell() : ''}
-          {this.state.dirs.map(this.renderDirCell)}
-          {this.state.images.map(this.renderFileCell)}
+          {this.state.prevState !== null
+            ? this.renderBrowserCell('Back to previous folder', this.goBack, ArrowBack, 'backCell') : ''}
+
+          {this.state.dirs.map((name) =>
+            this.renderBrowserCell(name, this.goToRelativeFolder, FolderOutline))}
+
+          {this.state.files.map((name) => (
+            this.renderBrowserCell(name, this.selectFile, InsertDriveFileOutlined,
+              (name === this.state.selectedFile ? 'selectedFileCell' : '')
+            )))}
         </div>
+
         <div className="fileBrowserDragPrompt">Drop folders here to go to them</div>
       </div>
     );
@@ -201,11 +189,11 @@ class FileBrowser extends Component {
 
   render() {
     return (
-      <nav id="sidebar" onDragOver={this.onDragOver}
+      <div id="sidebar" onDragOver={this.onDragOver}
            onDragLeave={this.onDragLeave} onDrop={this.onDrop}>
         {(this.state.dragOver) ? this.renderDropPrompt()
           : this.renderFileBrowser()}
-      </nav>
+      </div>
     );
   }
 }
