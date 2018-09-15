@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import backIcon from '../img/back.png'
-import fileIcon from '../img/file.png'
-import folderIcon from '../img/folder.png'
+import ArrowBack from '@material-ui/icons/ArrowBack'
+import InsertDriveFileOutlined from '@material-ui/icons/InsertDriveFileOutlined'
+import FolderOutline from '@material-ui/icons/FolderOutlined'
 import '../css/FileBrowser.css';
 
 const electron = window.require('electron');
@@ -83,7 +83,7 @@ class FileBrowser extends Component {
       <div className="fileCell"
            onClick={() => this.onDirSelected(name)}
            key={name}>
-        <img className="cellIcon" src={folderIcon} alt=""/>
+        <FolderOutline className="cellIcon"/>
         {name}
       </div>
     )
@@ -100,7 +100,7 @@ class FileBrowser extends Component {
       <div className={`fileCell ${selected ? 'selectedFileCell' : ''}`}
            onClick={() => this.onFileSelected(name)}
            key={name}>
-        <img className="cellIcon" src={fileIcon} alt=""/>
+        <InsertDriveFileOutlined className="cellIcon"/>
         <div>{name}</div>
       </div>
     )
@@ -117,7 +117,7 @@ class FileBrowser extends Component {
   renderBackCell() {
     return (
       <div className="fileCell backCell" onClick={this.goBack}>
-        <img className="cellIcon" src={backIcon} alt=""/>
+        <ArrowBack className="cellIcon"/>
         <div>Back to previous folder</div>
       </div>
     )

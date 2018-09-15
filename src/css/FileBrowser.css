@@ -41,7 +41,7 @@
 .fileCell {
     display: flex;
     flex-flow: row;
-    padding: 5px 12px 5px 12px;
+    padding: 5px 8px 5px 8px;
     font-size: 12pt;
 }
 
@@ -62,5 +62,6 @@
 }
 
 .cellIcon {
-    height: 24px;
+    max-height: 24px;
+    margin-right: 6px;
 }
