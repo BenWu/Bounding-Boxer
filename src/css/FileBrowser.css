@@ -33,7 +33,23 @@
     overflow: auto;
 }
 
-.fileBrowserInfoCell {
+.fileBrowserTitle {
+    padding-left: 8px;
+    line-height: 64px;
+    height: 64px;
+    background: #221266;
+    font-size: 18pt;
+}
+
+.fileBrowserTitleText {
+    padding-left: 8px;
+}
+
+.fileBrowserMenuButton {
+    margin-bottom: 4px;
+}
+
+.fileBrowserInfo {
     padding: 12px;
     background: #221266;
     font-size: 14pt;

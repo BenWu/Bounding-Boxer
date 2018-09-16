@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Drawer from '@material-ui/core/Drawer';
+import IconButton from "@material-ui/core/IconButton";
 import ArrowBack from '@material-ui/icons/ArrowBack'
 import FolderOutline from '@material-ui/icons/FolderOutlined'
 import InsertDriveFileOutlined from '@material-ui/icons/InsertDriveFileOutlined'
+import MenuIcon from "@material-ui/icons/Menu";
 
 import '../css/FileBrowser.css';
 
@@ -166,7 +168,14 @@ class FileBrowser extends Component {
   renderFileBrowser() {
     return (
       <div className="fileBrowser">
-        <div className="fileBrowserInfoCell">File Browser</div>
+        <div className="fileBrowserTitle">
+          <IconButton style={{backgroundColor: '#221266', color: '#ffffff'}}
+                      aria-label="Menu"
+                      onClick={this.props.toggleDrawer}>
+            <MenuIcon className="fileBrowserMenuButton"/>
+          </IconButton>
+          <span className="fileBrowserTitleText">File Browser</span>
+        </div>
 
         <div className="fileBrowserPath">
           {this.state.currentDir}
@@ -185,7 +194,7 @@ class FileBrowser extends Component {
             )))}
         </div>
 
-        <div className="fileBrowserInfoCell">Drop folders in the window to go to them</div>
+        <div className="fileBrowserInfo">Drop folders in the window to go to them</div>
       </div>
     );
   }
