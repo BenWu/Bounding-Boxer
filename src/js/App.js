@@ -36,8 +36,6 @@ class App extends Component {
   }
 
   onFileSelected(filepath) {
-    // TODO
-    console.log(`Selected: ${filepath}`);
     this.setState({selectedFile: filepath})
   }
 
