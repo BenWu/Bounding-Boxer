@@ -1,8 +1,7 @@
 #sidebar {
-    width: 20%;
-    max-width: 500px;
-    min-width: 300px;
-    background: #9a67ea;
+    min-width: 400px;
+    height: 100%;
+    background: #8561c5;
     box-shadow: 5px 6px 15px grey;
 }
 
@@ -17,14 +16,14 @@
 .fileBrowserDropPrompt {
     flex-grow: 1;
     padding: 12px;
-    background: #4527a0;
+    background: #381f75;
     text-align: center;
     font-size: 22pt;
 }
 
-.fileBrowserHeader {
+.fileBrowserPath {
     padding: 8px;
-    background: #320b86;
+    background: #381f75;
     font-size: 10pt;
     word-wrap: break-word;
 }
@@ -34,9 +33,10 @@
     overflow: auto;
 }
 
-.fileBrowserDragPrompt {
+.fileBrowserInfoCell {
     padding: 12px;
-    background: #320b86;
+    background: #221266;
+    font-size: 14pt;
 }
 
 .fileCell {
@@ -47,7 +47,7 @@
 }
 
 .fileCell:hover {
-    background: #4527a0;
+    background: #6a52b3;
 }
 
 .fileCell img {
@@ -59,7 +59,7 @@
 }
 
 .backCell {
-    background: #512da8;
+    background: #482880;
 }
 
 .waves-effect.waves-dark-purple .waves-ripple {
