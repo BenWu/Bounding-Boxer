@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Drawer from '@material-ui/core/Drawer';
 import ArrowBack from '@material-ui/icons/ArrowBack'
 import FolderOutline from '@material-ui/icons/FolderOutlined'
 import InsertDriveFileOutlined from '@material-ui/icons/InsertDriveFileOutlined'
@@ -165,7 +166,9 @@ class FileBrowser extends Component {
   renderFileBrowser() {
     return (
       <div className="fileBrowser">
-        <div className="fileBrowserHeader">
+        <div className="fileBrowserInfoCell">File Browser</div>
+
+        <div className="fileBrowserPath">
           {this.state.currentDir}
         </div>
 
@@ -182,18 +185,23 @@ class FileBrowser extends Component {
             )))}
         </div>
 
-        <div className="fileBrowserDragPrompt">Drop folders here to go to them</div>
+        <div className="fileBrowserInfoCell">Drop folders in the window to go to them</div>
       </div>
     );
   }
 
   render() {
     return (
-      <div id="sidebar" onDragOver={this.onDragOver}
-           onDragLeave={this.onDragLeave} onDrop={this.onDrop}>
-        {(this.state.dragOver) ? this.renderDropPrompt()
-          : this.renderFileBrowser()}
-      </div>
+      <Drawer open={this.props.isDrawerOpen}
+              onClose={this.props.toggleDrawer}
+              onDragOver={this.onDragOver}
+              onDragLeave={this.onDragLeave}
+              onDrop={this.onDrop}>
+        <div id="sidebar">
+          {(this.state.dragOver) ? this.renderDropPrompt()
+            : this.renderFileBrowser()}
+        </div>
+      </Drawer>
     );
   }
 }

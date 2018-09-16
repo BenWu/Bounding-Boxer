@@ -5,15 +5,14 @@
 }
 
 .appHeader {
-  padding: 12px;
-  background: #000063;
-  box-shadow: 0 4px 32px grey;
+
 }
 
 .appTitle {
+  width: 100%;
   font-size: 24px;
   text-align: center;
-  color: white;
+  color: #ffffff;
 }
 
 .content {

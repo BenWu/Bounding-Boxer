@@ -1,28 +1,73 @@
 import React, { Component } from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+
 import '../css/App.css';
 import './FileBrowser'
 import FileBrowser from "./FileBrowser";
 
 const appPath = window.require('electron').remote.getGlobal('appPath');
 
+/*
+Colors
+{
+  light: #8561c5, deepPurple 500 light
+  primary: #673ab7, deepPurple 500 primary
+  dark: #482880, deepPurple 500 dark
+  darker: #381f75, deepPurple 700 dark
+  darkest: #221266, deepPurple 900 dark
+  lightish: #6a52b3, deepPurple 800 light
+}
+*/
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isDrawerOpen: false
+    };
+
+    this.toggleDrawer = this.toggleDrawer.bind(this);
+  }
+
   onFileSelected(filepath) {
     // TODO
     console.log(`Selected: ${filepath}`);
   }
 
+  toggleDrawer() {
+    this.setState((state, props) => ({
+      isDrawerOpen: !state.isDrawerOpen
+    }));
+  }
+
   render() {
+    const appBarColor = '#221266';
+
     return (
       <div className="App">
 
-        <div className="container-fluid appHeader">
-            <div className="appTitle">Bounding Boxer</div>
-          </div>
+        <div className="appHeader">
+          <AppBar style={{backgroundColor: appBarColor}} position="static">
+            <Toolbar>
+              <IconButton style={{backgroundColor: appBarColor, color: '#ffffff'}}
+                          aria-label="Menu"
+                          onClick={this.toggleDrawer}>
+                <MenuIcon/>
+              </IconButton>
+              <span className="appTitle">Bounding Boxer</span>
+            </Toolbar>
+          </AppBar>
+        </div>
 
         <div className="content">
 
           <FileBrowser rootDir={`${appPath}/input_images/`}
-                       onFileSelected={this.onFileSelected}/>
+                       onFileSelected={this.onFileSelected}
+                       isDrawerOpen={this.state.isDrawerOpen}
+                       toggleDrawer={this.toggleDrawer}/>
 
           <div className="toolView">
             Placeholder
