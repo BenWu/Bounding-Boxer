@@ -16,15 +16,17 @@
   "dependencies": {
     "@material-ui/core": "^3.0.3",
     "@material-ui/icons": "^3.0.1",
-    "jquery": "^3.3.1",
+    "konva": "^2.3.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
+    "react-konva": "^1.7.15",
     "react-scripts": "1.1.5"
   },
   "devDependencies": {
     "electron": "^2.0.8",
     "electron-devtools-installer": "^2.2.4",
-    "foreman": "^3.0.1"
+    "foreman": "^3.0.1",
+    "jquery": "^3.3.1"
   },
   "repository": {
     "type": "git",

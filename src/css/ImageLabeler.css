@@ -1,5 +1,7 @@
 .toolView {
+  width: 100%;
   padding: 48px;
+  flex-grow: 1;
 }
 
 .imageFrame {
