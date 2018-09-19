@@ -14,11 +14,14 @@ const { default: installExtension, REACT_DEVELOPER_TOOLS } = require('electron-d
 let mainWindow;
 
 function createWindow() {
+    const isDev = process.env.BUILD_TYPE === 'dev';
+
     // Create the browser window.
     mainWindow = new BrowserWindow({
       width: 1280, height: 720,
       webPreferences: {
-        webSecurity: false // TODO: Should prolly remove eventually
+        webSecurity: false, // TODO: Should prolly remove eventually
+        devTools: isDev
       }
     });
 
@@ -29,8 +32,9 @@ function createWindow() {
         });
     mainWindow.loadURL(startUrl);
 
-    // Open the DevTools.
-    mainWindow.webContents.openDevTools();
+    if (isDev) {
+      mainWindow.webContents.openDevTools();
+    }
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
