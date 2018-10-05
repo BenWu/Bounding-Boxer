@@ -172,8 +172,11 @@ class ResizableRectLayer extends Component {
   };
 
   updateRects(rectangles) {
-    console.log('update');//
-    this.setState({ rectangles })
+    this.setState({
+      selectedShapeName: '',
+      maxId: rectangles.length ? Math.max(...rectangles.map(r => Number(r.name))) : 0,
+      rectangles
+    })
   }
 
   render() {

@@ -12,6 +12,12 @@ db.loadDatabase(err => {
   if (err) console.error(err);
 });
 
+//db.remove({}, { multi: true }, function (err, numRemoved) {
+//  if (!err) {
+//    console.log(`Removed ${numRe//moved} annotations`);
+//  }
+//});
+
 class ImageLabeler extends Component {
   constructor(props) {
     super(props);
@@ -33,15 +39,22 @@ class ImageLabeler extends Component {
     this.onStageDblClick = this.onStageDblClick.bind(this);
     this.updateAnnotation = this.updateAnnotation.bind(this);
     this.loadAnnotations = this.loadAnnotations.bind(this);
+
+    this.scale = 1;
   }
 
   loadAnnotations() {
-    console.log('load annotations');
     db.find({ file: this.props.selectedFile, deleted: false }, (err, docs) => {
       if (err) {
         console.error(err);
       } else {
         this.setState({ annotations: docs });
+        for (let doc of docs) {
+          doc.x /= doc.imageScale / this.scale;
+          doc.y /= doc.imageScale / this.scale;
+          doc.width /= doc.imageScale / this.scale;
+          doc.height /= doc.imageScale / this.scale;
+        }
         this.annotationLayer.current.updateRects(docs);
       }
     });
@@ -88,6 +101,7 @@ class ImageLabeler extends Component {
         console.error(err);
       } else {
         annotation.file = this.props.selectedFile;
+        annotation.imageScale = this.scale;
         if (!doc) {
           db.insert(annotation, () => {
             this.loadAnnotations();
@@ -123,6 +137,8 @@ class ImageLabeler extends Component {
 
     const calculatedWidth = imageWidth * scale;
     const calculatedHeight = imageHeight * scale;
+
+    this.scale = scale;
 
     return (
       <div style={{width: calculatedWidth, height: calculatedHeight}}
