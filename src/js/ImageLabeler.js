@@ -114,10 +114,27 @@ class ImageLabeler extends Component {
       <div className="toolView" ref={this.imageFrame}>
 
         <div className="labelerHeader">
-          {this.props.selectedFile || 'Placeholder'}
+          {this.props.selectedFile || 'Start by opening the menu and selecting an image'}
         </div>
 
         {this.renderImage()}
+
+        {this.props.selectedFile ? (
+          <div className="labelerInstructions">
+            Double click the image to add a bounding box
+            <br/>
+            Drag a box to move it
+            <br/>
+            Select a box by clicking on it to resize it
+            <br/>
+            Double click an existing box to delete it
+            <br/>
+            Changes are saved as they are made
+            <br/>
+            Click the save button to export all the data to a CSV file
+          </div>
+        ) : ''
+        }
 
       </div>
     );
