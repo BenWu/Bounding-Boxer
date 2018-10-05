@@ -27,8 +27,6 @@ class ImageLabeler extends Component {
     this.setState({
       containerWidth: this.imageFrame.current.offsetWidth,
       containerHeight: this.imageFrame.current.offsetHeight
-    }, () => {
-      console.log(`width: ${this.state.containerWidth} height: ${this.state.containerHeight}`);
     });
   }
 
@@ -89,6 +87,8 @@ class ImageLabeler extends Component {
           </Layer>
 
           <ResizableRectLayer ref={this.annotationLayer}
+                              width={calculatedWidth}
+                              height={calculatedHeight}
                               rectangles={[
                                 // TODO: load shapes from DB
                               ]}/>

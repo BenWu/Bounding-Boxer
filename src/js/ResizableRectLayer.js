@@ -73,6 +73,7 @@ class TransformerComponent extends Component {
     return (
       <Transformer
         rotateEnabled={false}
+        anchorSize={7}
         ref={node => {
           this.transformer = node;
         }}
@@ -88,7 +89,7 @@ class ResizableRectLayer extends Component {
     this.state = {
       rectangles: props.rectangles,
       selectedShapeName: '',
-      maxId: Math.max(...props.rectangles.map(r => Number(r.name)))
+      maxId: props.rectangles.length ? Math.max(...props.rectangles.map(r => Number(r.name))) : 0
     };
 
     this.onClick = this.onClick.bind(this);
@@ -157,6 +158,8 @@ class ResizableRectLayer extends Component {
 
   handleRectChange = (index, newProps) => {
     const rectangles = this.state.rectangles.concat();
+    newProps.x = Math.min(Math.max(newProps.x, 0), this.props.width - newProps.width);
+    newProps.y = Math.min(Math.max(newProps.y, 0), this.props.height - newProps.height);
     rectangles[index] = {
       ...rectangles[index],
       ...newProps
