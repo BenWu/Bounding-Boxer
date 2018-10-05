@@ -14,7 +14,7 @@ db.loadDatabase(err => {
 
 //db.remove({}, { multi: true }, function (err, numRemoved) {
 //  if (!err) {
-//    console.log(`Removed ${numRe//moved} annotations`);
+//    console.log(`Removed ${numRemoved} annotations`);
 //  }
 //});
 
@@ -50,12 +50,33 @@ class ImageLabeler extends Component {
       } else {
         this.setState({ annotations: docs });
         for (let doc of docs) {
-          doc.x /= doc.imageScale / this.scale;
-          doc.y /= doc.imageScale / this.scale;
-          doc.width /= doc.imageScale / this.scale;
-          doc.height /= doc.imageScale / this.scale;
+          doc.x *= this.scale;
+          doc.y *= this.scale;
+          doc.width *= this.scale;
+          doc.height *= this.scale;
         }
         this.annotationLayer.current.updateRects(docs);
+      }
+    });
+  }
+
+  exportAnnotationsToCsv() {
+    db.find({ deleted: false }).sort({ file: 1 }).exec((err, docs) => {
+      if (err) {
+        console.error(err);
+      } else {
+        const headers = ['filepath', 'x', 'y', 'width', 'height'];
+        const csvRows = [''];
+        for (let doc of docs) {
+          csvRows.push([doc.file, doc.x, doc.y, doc.width, doc.height].join(','));
+        }
+        csvRows.push('');
+        const csvContent = 'data:text/csv;charset=utf-8,' + headers.join(',') + csvRows.join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement('a');
+        link.setAttribute('href', encodedUri);
+        link.setAttribute('download', 'annotations.csv');
+        link.click();
       }
     });
   }
@@ -71,8 +92,6 @@ class ImageLabeler extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.selectedFile !== this.props.selectedFile) {
-      this.loadAnnotations();
-
       let image = new window.Image();
       image.src = 'file://' + this.props.selectedFile;
       image.onload = () => {
@@ -86,13 +105,14 @@ class ImageLabeler extends Component {
             containerWidth: this.imageFrame.current.offsetWidth,
             containerHeight: this.imageFrame.current.offsetHeight
           });
+
+          this.loadAnnotations();
         });
       };
     }
   }
 
   updateAnnotation(annotation) {
-    // TODO: use scaled properties
     db.findOne({
       file: this.props.selectedFile,
       name: annotation.name
@@ -101,7 +121,10 @@ class ImageLabeler extends Component {
         console.error(err);
       } else {
         annotation.file = this.props.selectedFile;
-        annotation.imageScale = this.scale;
+        annotation.x = Math.round(annotation.x / this.scale);
+        annotation.y = Math.round(annotation.y / this.scale);
+        annotation.width = Math.round(annotation.width / this.scale);
+        annotation.height = Math.round(annotation.height / this.scale);
         if (!doc) {
           db.insert(annotation, () => {
             this.loadAnnotations();
@@ -173,6 +196,8 @@ class ImageLabeler extends Component {
 
         {this.renderImage()}
 
+        <button onClick={this.exportAnnotationsToCsv}>Save Annotations</button>
+
         {this.props.selectedFile ? (
           <div className="labelerInstructions">
             Double click the image to add a bounding box
@@ -185,7 +210,7 @@ class ImageLabeler extends Component {
             <br/>
             Changes are saved as they are made
             <br/>
-            Click the save button to export all the data to a CSV file
+            Click the save button to export all annotation data to a CSV file
           </div>
         ) : ''
         }
