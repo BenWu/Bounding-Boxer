@@ -5,8 +5,8 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
 import '../css/App.css';
-import './FileBrowser'
-import FileBrowser from "./FileBrowser";
+import FileBrowser from './FileBrowser';
+import ImageLabeler from './ImageLabeler';
 
 const appPath = window.require('electron').remote.getGlobal('appPath');
 
@@ -26,15 +26,17 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isDrawerOpen: false
+      isDrawerOpen: true,
+      selectedFile: null
     };
 
     this.toggleDrawer = this.toggleDrawer.bind(this);
+
+    this.onFileSelected = this.onFileSelected.bind(this);
   }
 
   onFileSelected(filepath) {
-    // TODO
-    console.log(`Selected: ${filepath}`);
+    this.setState({selectedFile: filepath})
   }
 
   toggleDrawer() {
@@ -69,9 +71,7 @@ class App extends Component {
                        isDrawerOpen={this.state.isDrawerOpen}
                        toggleDrawer={this.toggleDrawer}/>
 
-          <div className="toolView">
-            Placeholder
-          </div>
+          <ImageLabeler selectedFile={this.state.selectedFile}/>
 
         </div>
 

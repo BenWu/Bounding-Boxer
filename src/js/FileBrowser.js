@@ -122,7 +122,6 @@ class FileBrowser extends Component {
     try { // Exception if not file
       const divider = os.platform() === 'win32' ? '\\' : '/';
       let path = e.dataTransfer.files[0].path;
-      console.log(path);
       this.setState({dragOver: false}, () => {
         fs.stat(path, (err, stats) => {
           if (!err) {
@@ -131,10 +130,9 @@ class FileBrowser extends Component {
               subdirs.splice(subdirs.length - 1, 1);
               path = subdirs.join(divider)
             }
-            console.log(path);
             this.goToFolder(path);
           } else {
-            console.log(err);
+            console.error(err);
           }
         });
       });

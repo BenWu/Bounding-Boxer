@@ -1,0 +1,31 @@
+.toolView {
+  width: 100%;
+  padding: 48px;
+  flex-grow: 1;
+}
+
+.imageFrame {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 4px 32px grey;
+}
+
+.imageFrame img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.hiddenImage {
+  box-shadow: 0 0 white
+}
+
+.labelerHeader {
+  font-size: 14pt;
+  margin-bottom: 24px;
+}
+
+.labelerInstructions {
+  margin-top: 48px;
+  font-size: 14pt;
+  line-height: 28pt;
+}
