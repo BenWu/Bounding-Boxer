@@ -96,6 +96,13 @@ class ResizableRectLayer extends Component {
     this.onDblClick = this.onDblClick.bind(this);
   }
 
+  clearRects() {
+    this.setState({
+      rectangles: [],
+      selectedShapeName: ''
+    })
+  }
+
   onClick(e) {
     if (e.target === e.target.getStage()) {
       this.setState({
@@ -135,7 +142,6 @@ class ResizableRectLayer extends Component {
       });
     } else {
       const id = this.state.maxId + 1;
-      console.log(id);
       const newRect = {
         x: e.evt.layerX - 25,
         y: e.evt.layerY - 25,
@@ -158,6 +164,8 @@ class ResizableRectLayer extends Component {
 
   handleRectChange = (index, newProps) => {
     const rectangles = this.state.rectangles.concat();
+    newProps.width = Math.min(this.props.width, newProps.width);
+    newProps.height = Math.min(this.props.height, newProps.height);
     newProps.x = Math.min(Math.max(newProps.x, 0), this.props.width - newProps.width);
     newProps.y = Math.min(Math.max(newProps.y, 0), this.props.height - newProps.height);
     rectangles[index] = {
@@ -166,6 +174,8 @@ class ResizableRectLayer extends Component {
     };
 
     this.setState({ rectangles });
+
+    this.props.onUpdateRects(rectangles);
   };
 
   render() {

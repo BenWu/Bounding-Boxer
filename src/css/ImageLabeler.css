@@ -18,3 +18,8 @@
 .hiddenImage {
   box-shadow: 0 0 white
 }
+
+.labelerHeader {
+  font-size: 14pt;
+  margin-bottom: 24px;
+}

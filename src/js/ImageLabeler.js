@@ -50,6 +50,16 @@ class ImageLabeler extends Component {
     }
   }
 
+  componentWillUpdate(nextProps, nextState, nextContext) {
+    if (nextProps.selectedFile !== this.props.selectedFile) {
+      this.annotationLayer.current.clearRects();
+    }
+  }
+
+  saveAnnotations() {
+    console.log('s');
+  }
+
   onStageClick(e) {
     this.annotationLayer.current.onClick(e);
   }
@@ -89,6 +99,7 @@ class ImageLabeler extends Component {
           <ResizableRectLayer ref={this.annotationLayer}
                               width={calculatedWidth}
                               height={calculatedHeight}
+                              onUpdateRects={this.saveAnnotations}
                               rectangles={[
                                 // TODO: load shapes from DB
                               ]}/>
