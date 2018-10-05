@@ -4,6 +4,14 @@ import { Stage, Layer, Image } from 'react-konva';
 import '../css/ImageLabeler.css'
 import ResizableRectLayer from './ResizableRectLayer';
 
+import Datastore from 'nedb';
+
+const db = new Datastore({ filename: 'annotations.db' });
+
+db.loadDatabase(err => {
+  if (err) console.error(err);
+});
+
 class ImageLabeler extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +21,9 @@ class ImageLabeler extends Component {
       imageHeight: 0,
       isValidImage: false,
       containerWidth: 0,
-      containerHeight: 0
+      containerHeight: 0,
+      annotations: [],
+      scale: 1
     };
 
     this.imageFrame = React.createRef();
@@ -21,6 +31,20 @@ class ImageLabeler extends Component {
 
     this.onStageClick = this.onStageClick.bind(this);
     this.onStageDblClick = this.onStageDblClick.bind(this);
+    this.updateAnnotation = this.updateAnnotation.bind(this);
+    this.loadAnnotations = this.loadAnnotations.bind(this);
+  }
+
+  loadAnnotations() {
+    console.log('load annotations');
+    db.find({ file: this.props.selectedFile, deleted: false }, (err, docs) => {
+      if (err) {
+        console.error(err);
+      } else {
+        this.setState({ annotations: docs });
+        this.annotationLayer.current.updateRects(docs);
+      }
+    });
   }
 
   componentDidMount() {
@@ -28,10 +52,14 @@ class ImageLabeler extends Component {
       containerWidth: this.imageFrame.current.offsetWidth,
       containerHeight: this.imageFrame.current.offsetHeight
     });
+
+    this.loadAnnotations();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.selectedFile !== this.props.selectedFile) {
+      this.loadAnnotations();
+
       let image = new window.Image();
       image.src = 'file://' + this.props.selectedFile;
       image.onload = () => {
@@ -50,14 +78,27 @@ class ImageLabeler extends Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState, nextContext) {
-    if (nextProps.selectedFile !== this.props.selectedFile) {
-      this.annotationLayer.current.clearRects();
-    }
-  }
-
-  saveAnnotations() {
-    console.log('s');
+  updateAnnotation(annotation) {
+    // TODO: use scaled properties
+    db.findOne({
+      file: this.props.selectedFile,
+      name: annotation.name
+    }, (err, doc) => {
+      if (err) {
+        console.error(err);
+      } else {
+        annotation.file = this.props.selectedFile;
+        if (!doc) {
+          db.insert(annotation, () => {
+            this.loadAnnotations();
+          });
+        } else {
+          db.update(doc, annotation, () => {
+            this.loadAnnotations();
+          });
+        }
+      }
+    })
   }
 
   onStageClick(e) {
@@ -99,11 +140,8 @@ class ImageLabeler extends Component {
           <ResizableRectLayer ref={this.annotationLayer}
                               width={calculatedWidth}
                               height={calculatedHeight}
-                              onUpdateRects={this.saveAnnotations}
-                              rectangles={[
-                                // TODO: load shapes from DB
-                              ]}/>
-
+                              onUpdateRect={this.updateAnnotation}
+                              rectangles={this.state.annotations}/>
         </Stage>
       </div>
     )

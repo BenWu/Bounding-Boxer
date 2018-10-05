@@ -17,6 +17,7 @@
     "@material-ui/core": "^3.0.3",
     "@material-ui/icons": "^3.0.1",
     "konva": "^2.3.0",
+    "nedb": "^1.8.0",
     "react": "^16.5.0",
     "react-dom": "^16.5.0",
     "react-konva": "^1.7.15",

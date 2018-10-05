@@ -96,13 +96,6 @@ class ResizableRectLayer extends Component {
     this.onDblClick = this.onDblClick.bind(this);
   }
 
-  clearRects() {
-    this.setState({
-      rectangles: [],
-      selectedShapeName: ''
-    })
-  }
-
   onClick(e) {
     if (e.target === e.target.getStage()) {
       this.setState({
@@ -120,26 +113,23 @@ class ResizableRectLayer extends Component {
 
     const name = e.target.name();
     const rect = this.state.rectangles.find(r => r.name === name);
-    if (rect) {
-      this.setState({
-        selectedShapeName: name
-      });
-    } else {
-      this.setState({
-        selectedShapeName: ''
-      });
-    }
+    this.setState({
+      selectedShapeName: rect ? name : ''
+    });
   };
 
   onDblClick(e) {
     const name = e.target.name();
     const rect = this.state.rectangles.find(r => r.name === name);
     if (rect) {
+      const updated = this.state.rectangles.filter(r => r.name === name)[0];
+      updated.deleted = true;
       const rectangles = this.state.rectangles.filter(r => r.name !== name);
       this.setState({
         selectedShapeName: name,
         rectangles
       });
+      this.props.onUpdateRect(updated);
     } else {
       const id = this.state.maxId + 1;
       const newRect = {
@@ -147,10 +137,12 @@ class ResizableRectLayer extends Component {
         y: e.evt.layerY - 25,
         width: 50,
         height: 50,
-        fill: '#e48100',
-        stroke: '#a85c00',
+        fill: '#ff9e18',
+        stroke: '#875400',
+        strokeWidth: 5,
         opacity: 0.6,
-        name: `${id}`
+        name: `${id}`,
+        deleted: false
       };
       const rectangles = this.state.rectangles.slice();
       rectangles.push(newRect);
@@ -159,6 +151,7 @@ class ResizableRectLayer extends Component {
         maxId: id,
         rectangles
       });
+      this.props.onUpdateRect(newRect);
     }
   };
 
@@ -175,13 +168,20 @@ class ResizableRectLayer extends Component {
 
     this.setState({ rectangles });
 
-    this.props.onUpdateRects(rectangles);
+    this.props.onUpdateRect(rectangles[index]);
   };
 
+  updateRects(rectangles) {
+    console.log('update');//
+    this.setState({ rectangles })
+  }
+
   render() {
+    const rectangles = this.props.useExternalState ? this.props.rectangles : this.state.rectangles;
+
     return (
       <Layer>
-        {this.state.rectangles.map((rect, i) => (
+        {rectangles.map((rect, i) => (
           <ResizableRect
             key={i}
             {...rect}
