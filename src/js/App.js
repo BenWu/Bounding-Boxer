@@ -9,6 +9,7 @@ import FileBrowser from './FileBrowser';
 import ImageLabeler from './ImageLabeler';
 
 const appPath = window.require('electron').remote.getGlobal('appPath');
+const isDev = window.require('electron').remote.getGlobal('isDev');
 
 /*
 Colors
@@ -48,6 +49,10 @@ class App extends Component {
   render() {
     const appBarColor = '#221266';
 
+    const rootDir = isDev
+      ? `${appPath}/input_images/`
+      : 'Begin by dragging a file or folder into the window';
+
     return (
       <div className="App">
 
@@ -66,7 +71,7 @@ class App extends Component {
 
         <div className="content">
 
-          <FileBrowser rootDir={`${appPath}/input_images/`}
+          <FileBrowser rootDir={rootDir}
                        onFileSelected={this.onFileSelected}
                        isDrawerOpen={this.state.isDrawerOpen}
                        toggleDrawer={this.toggleDrawer}/>
@@ -76,7 +81,7 @@ class App extends Component {
         </div>
 
         <div className="appFooter">
-          <a target="_blank" href="https://github.com/Ben-Wu/Bounding-Boxer">View source</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://github.com/Ben-Wu/Bounding-Boxer">View source</a>
         </div>
 
       </div>
