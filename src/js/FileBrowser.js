@@ -58,6 +58,10 @@ class FileBrowser extends Component {
    */
   listFiles(inputDir, callback) {
     fs.readdir(inputDir, (err, files) => {
+      if (err) {
+        // Assume folder not found
+        return;
+      }
       let images = [];
       let dirs = [];
 

@@ -32,3 +32,11 @@ yarn
 ```sh
 yarn start
 ```
+
+### Make release
+
+```sh
+yarn build
+```
+
+Output files will be in `/dist`

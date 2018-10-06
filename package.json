@@ -1,18 +1,20 @@
 {
   "name": "bounding-boxer",
-  "version": "0.1.0",
-  "description": "Draw bounding boxes on images and save as CSV",
+  "version": "1.0.0",
+  "description": "Draw bounding boxes on images and save them in a CSV",
   "private": true,
   "scripts": {
-    "start": "nf start",
-    "start-headless": "BROWSER=none BUILD_TYPE=dev nf start",
+    "start": "BROWSER=none BUILD_TYPE=dev nf start",
+    "start-prod": "BROWSER=none nf start",
     "react-start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "electron": "electron ."
+    "react-build": "react-scripts build",
+    "react-eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron-build": "electron-builder",
+    "release": "yarn react-build && electron-builder --publish=always",
+    "build": "yarn react-build && yarn electron-build"
   },
-  "main": "src/config/electron-main.js",
+  "main": "public/electron.js",
   "dependencies": {
     "@material-ui/core": "^3.0.3",
     "@material-ui/icons": "^3.0.1",
@@ -25,9 +27,9 @@
   },
   "devDependencies": {
     "electron": "^2.0.8",
+    "electron-builder": "^20.28.4",
     "electron-devtools-installer": "^2.2.4",
-    "foreman": "^3.0.1",
-    "jquery": "^3.3.1"
+    "foreman": "^3.0.1"
   },
   "repository": {
     "type": "git",
@@ -38,5 +40,18 @@
   "bugs": {
     "url": "https://github.com/Ben-Wu/Bounding-Boxer/issues"
   },
-  "homepage": "./"
+  "homepage": "./",
+  "build": {
+    "appId": "ca.benwu.bounding_boxer",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories":{
+      "buildResources": "assets"
+    }
+  }
 }
