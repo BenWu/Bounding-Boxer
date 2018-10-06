@@ -194,12 +194,21 @@ class ImageLabeler extends Component {
           {this.props.selectedFile || 'Start by opening the menu and selecting an image'}
         </div>
 
+        {this.state.image !== null ? <div className="divider"/> : ''}
+
         {this.renderImage()}
 
-        <button onClick={this.exportAnnotationsToCsv}>Save Annotations</button>
+        <div className="divider"/>
+
+        <button className="btn btn-info saveButton"
+                onClick={this.exportAnnotationsToCsv}>
+          Save Annotations
+        </button>
 
         {this.props.selectedFile ? (
           <div className="labelerInstructions">
+            <span className="instructionsHeader">Instructions</span>
+            <br/>
             Double click the image to add a bounding box
             <br/>
             Drag a box to move it
@@ -208,7 +217,7 @@ class ImageLabeler extends Component {
             <br/>
             Double click an existing box to delete it
             <br/>
-            Changes are saved as they are made
+            Changes are stored as they are made
             <br/>
             Click the save button to export all annotation data to a CSV file
           </div>
