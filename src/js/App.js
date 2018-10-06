@@ -75,6 +75,10 @@ class App extends Component {
 
         </div>
 
+        <div className="appFooter">
+          <a target="_blank" href="https://github.com/Ben-Wu/Bounding-Boxer">View source</a>
+        </div>
+
       </div>
     );
   }

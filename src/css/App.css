@@ -1,11 +1,21 @@
 .App {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .appHeader {
 
+}
+
+.appFooter {
+  padding: 24px;
+  background: #221266;
+  text-align: end;
+}
+
+.appFooter a {
+  color: #ffffff;
 }
 
 .appTitle {
@@ -20,4 +30,5 @@
   width: 100%;
   align-items: stretch;
   flex-grow: 1;
+  background: #fff8e1;
 }
